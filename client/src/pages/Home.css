@@ -1,0 +1,147 @@
+.hero-exact {
+    width: 100%;
+    height: 90vh;
+    background-color: var(--bg-cream);
+    margin-bottom: 5rem;
+}
+
+.hero-exact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    height: 100%;
+}
+
+.hero-col {
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+}
+
+.hero-col img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Text Overlay Style */
+.hero-text-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 100%;
+    pointer-events: none;
+}
+
+.hero-text-overlay h1 {
+    font-size: 5rem;
+    font-weight: 800;
+    color: var(--bg-cream);
+    line-height: 0.8;
+    margin-bottom: 0.5rem;
+    font-family: var(--font-serif);
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+}
+
+.hero-text-overlay p {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--bg-cream);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 6px rgba(0,0,0,0.4);
+}
+
+/* Pill Button Style */
+.hero-btn-overlay {
+    position: absolute;
+    bottom: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.pill-btn {
+    background: white;
+    color: var(--primary-black);
+    padding: 1.2rem 3rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: capitalize;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    white-space: nowrap;
+}
+
+.pill-btn:hover {
+    background: var(--gray-light);
+    transform: translateY(-2px);
+}
+
+/* Floating Chat */
+.floating-chat {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 2000;
+}
+
+.chat-btn {
+    background: black;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-weight: 600;
+    position: relative;
+}
+
+.chat-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #ff3b30;
+    color: white;
+    font-size: 0.7rem;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 1024px) {
+    .hero-exact-grid {
+        grid-template-columns: 1fr;
+    }
+    .hero-col {
+        height: 60vh;
+    }
+    .hero-text-overlay h1 {
+        font-size: 4rem;
+    }
+}
+
+.view-all-container {
+    text-align: center;
+    margin-top: 6rem;
+}
+
+.view-all-btn {
+    display: inline-block;
+    padding: 1rem 3rem;
+    border: 1px solid #ddd;
+    color: var(--primary-black);
+    text-transform: capitalize;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: var(--transition-smooth);
+}
+
+.view-all-btn:hover {
+    border-color: black;
+    background: #f9f9f9;
+}

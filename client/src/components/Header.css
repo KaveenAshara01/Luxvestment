@@ -1,0 +1,253 @@
+.top-bar {
+    background-color: var(--primary-black);
+    color: var(--white);
+    padding: 10px 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.65rem;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+}
+
+.top-bar-center {
+    flex: 1;
+    text-align: center;
+}
+
+.header {
+    background-color: var(--bg-cream);
+    padding: 1rem 0;
+    transition: var(--transition-smooth);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header.scrolled {
+    padding: 0.3rem 0;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+}
+
+.header-container {
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 0 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+}
+
+.burger-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 25px;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    z-index: 2001;
+}
+
+.burger-menu span {
+    display: block;
+    width: 100%;
+    height: 1.5px;
+    background-color: var(--primary-black);
+    transition: var(--transition-smooth);
+}
+
+.burger-menu.open span:nth-child(1) {
+    transform: translateY(7.5px) rotate(45deg);
+}
+
+.burger-menu.open span:nth-child(2) {
+    opacity: 0;
+}
+
+.burger-menu.open span:nth-child(3) {
+    transform: translateY(-7.5px) rotate(-45deg);
+}
+
+.logo-container {
+    text-align: center;
+}
+
+.logo {
+    height: 65px;
+    transition: var(--transition-smooth);
+}
+
+.scrolled .logo {
+    height: 40px;
+}
+
+.header-right {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.header-icons {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    color: var(--primary-black);
+}
+
+.icon-btn {
+    color: var(--primary-black);
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+/* Side Menu Styles */
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1999;
+    visibility: hidden;
+    transition: visibility 0.5s;
+}
+
+.side-menu.active {
+    visibility: visible;
+}
+
+.side-menu-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.3);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.side-menu.active .side-menu-overlay {
+    opacity: 1;
+}
+
+.side-menu-content {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 400px;
+    height: 100%;
+    background: var(--bg-cream);
+    padding: 10rem 4rem;
+    transition: left 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.side-menu.active .side-menu-content {
+    left: 0;
+}
+
+.side-nav ul li {
+    margin-bottom: 2rem;
+}
+
+.side-nav ul li a {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.side-nav ul li a:hover {
+    color: var(--luxury-gold);
+}
+
+.side-menu-footer p {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #999;
+}
+
+@media (max-width: 1024px) {
+    .header-container {
+        padding: 0 1.5rem;
+    }
+    .top-bar {
+        padding: 10px 1.5rem;
+    }
+    .side-menu-content {
+        width: 100%;
+    }
+}
+
+.user-nav {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.user-name {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.logout-btn {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid black;
+    padding-bottom: 2px;
+}
+
+.admin-link {
+    color: var(--luxury-gold) !important;
+}
+
+/* Professional Currency Select Dropdown */
+.currency-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: transparent;
+    color: var(--white);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 2px 20px 2px 8px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    border-radius: 4px;
+    outline: none;
+    transition: all 0.2s ease;
+    /* Custom SVG Arrow */
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 6px top 50%;
+    background-size: 8px auto;
+}
+
+.currency-select:hover, .currency-select:focus {
+    border-color: var(--luxury-gold, #c1a87d);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.currency-select option {
+    background-color: var(--bg-cream, #f9f7f1);
+    color: var(--primary-black, #1a1a1a);
+    font-weight: 500;
+    padding: 8px;
+}

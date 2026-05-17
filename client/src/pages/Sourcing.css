@@ -1,0 +1,142 @@
+.sourcing-page {
+    padding-bottom: 6rem;
+}
+
+.sourcing-hero {
+    height: 40vh;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    background-color: var(--primary-black);
+    color: white;
+    margin-bottom: 5rem;
+}
+
+.sourcing-hero h1 {
+    font-size: 4rem;
+    line-height: 1.1;
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.sourcing-hero p {
+    font-size: 1.5rem;
+    color: var(--luxury-gold);
+}
+
+.sourcing-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 4rem;
+}
+
+.sourcing-info h2 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+.sourcing-info p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #555;
+    margin-bottom: 3rem;
+}
+
+.process {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+.step h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: var(--luxury-gold);
+}
+
+.step p {
+    font-size: 0.9rem;
+    margin-bottom: 0;
+    line-height: 1.6;
+}
+
+.sourcing-form-container {
+    background: var(--bg-cream);
+    padding: 3rem;
+    border-radius: 8px;
+}
+
+.sourcing-form-container h3 {
+    margin-bottom: 2.5rem;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.form-group input, .form-group textarea {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: var(--transition-smooth);
+}
+
+.form-group input:focus, .form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-black);
+}
+
+.form-group textarea {
+    height: 120px;
+    resize: vertical;
+}
+
+.sourcing-form .premium-btn {
+    width: 100%;
+    margin-top: 1.5rem;
+    border-radius: 4px;
+}
+
+@media (max-width: 1024px) {
+    .sourcing-hero h1 {
+        font-size: 3rem;
+    }
+    .sourcing-grid {
+        grid-template-columns: 1fr;
+        gap: 4rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .sourcing-hero {
+        height: auto;
+        padding: 4rem 0;
+        margin-bottom: 4rem;
+    }
+    .sourcing-hero h1 {
+        font-size: 2.5rem;
+    }
+    .sourcing-hero p {
+        font-size: 1.2rem;
+    }
+    .sourcing-info h2 {
+        font-size: 2rem;
+    }
+    .sourcing-form-container {
+        padding: 2rem 1.5rem;
+    }
+}

@@ -1,0 +1,129 @@
+.authenticity-page {
+    padding-bottom: 6rem;
+}
+
+.auth-hero {
+    height: 40vh;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    background-color: var(--gray-light);
+    margin-bottom: 5rem;
+}
+
+.auth-hero h1 {
+    font-size: 4rem;
+    line-height: 1.1;
+}
+
+.auth-hero p {
+    font-size: 1.2rem;
+    margin-top: 1.5rem;
+    color: #666;
+}
+
+.auth-intro {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 6rem;
+}
+
+.auth-intro h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.auth-intro p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #555;
+}
+
+.auth-features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-bottom: 8rem;
+}
+
+.auth-card {
+    padding: 2.5rem;
+    border: 1px solid #eee;
+    transition: var(--transition-smooth);
+    border-radius: 8px;
+}
+
+.auth-card:hover {
+    border-color: var(--luxury-gold);
+    transform: translateY(-5px);
+}
+
+.auth-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: var(--luxury-gold);
+}
+
+.auth-card p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: #666;
+}
+
+.auth-banner {
+    background: var(--primary-black);
+    color: white;
+    padding: 6rem 2rem;
+    text-align: center;
+    border-radius: 12px;
+    margin: 0 1rem;
+}
+
+.auth-banner h2 {
+    font-size: 2.5rem;
+    color: white;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+@media (max-width: 1024px) {
+    .auth-hero h1 {
+        font-size: 3rem;
+    }
+    .auth-features {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .auth-hero {
+        height: auto;
+        padding: 4rem 0;
+        margin-bottom: 4rem;
+    }
+    .auth-hero h1 {
+        font-size: 2.5rem;
+    }
+    .auth-intro {
+        margin: 0 auto 4rem;
+    }
+    .auth-intro h2 {
+        font-size: 2rem;
+    }
+    .auth-features {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        margin-bottom: 4rem;
+    }
+    .auth-card {
+        padding: 2rem 1.5rem;
+    }
+    .auth-banner {
+        padding: 4rem 1.5rem;
+        margin: 0;
+        border-radius: 0;
+    }
+    .auth-banner h2 {
+        font-size: 2rem;
+    }
+}
