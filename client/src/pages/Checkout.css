@@ -402,3 +402,44 @@
     from { opacity: 0; transform: scale(0.95); }
     to { opacity: 1; transform: scale(1); }
 }
+
+/* Autocomplete Country Suggestions Dropdown */
+.country-input-container {
+    position: relative;
+}
+
+.country-suggestions-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+    z-index: 1000;
+    max-height: 220px;
+    overflow-y: auto;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.country-suggestion-item {
+    padding: 0.9rem 1.2rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    color: #000000;
+    transition: all 0.2s cubic-bezier(0.19, 1, 0.22, 1);
+    border-bottom: 1px solid #f6f6f6;
+    text-align: left;
+}
+
+.country-suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.country-suggestion-item:hover {
+    background-color: #f6f6f6;
+    font-weight: 500;
+    padding-left: 1.5rem;
+}

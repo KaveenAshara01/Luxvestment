@@ -121,14 +121,18 @@
 }
 
 @media (max-width: 1024px) {
+    .hero-exact {
+        height: auto;
+        margin-bottom: 3rem;
+    }
     .hero-exact-grid {
         grid-template-columns: 1fr;
     }
     .hero-col {
-        height: 60vh;
+        height: 45vh;
     }
     .hero-text-overlay h1 {
-        font-size: 4rem;
+        font-size: 3.5rem;
     }
 }
 
@@ -227,7 +231,7 @@
 
 @media (max-width: 600px) {
     .home-product-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
         gap: 0.5rem;
     }
 }

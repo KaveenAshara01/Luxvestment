@@ -18,6 +18,8 @@ import AdminLayout from './pages/admin/AdminLayout';
 import Inventory from './pages/admin/Inventory';
 import Collections from './pages/admin/Collections';
 import Orders from './pages/admin/Orders';
+import Dashboard from './pages/admin/Dashboard';
+import AnalyticsTracker from './components/AnalyticsTracker';
 import { AuthProvider } from './context/AuthContext';
 import { CurrencyProvider } from './context/CurrencyContext';
 import { CartProvider } from './context/CartContext';
@@ -30,6 +32,7 @@ function App() {
       <CurrencyProvider>
         <CartProvider>
           <Router>
+            <AnalyticsTracker />
             <div className="App">
               <Header />
               <CartDrawer />
@@ -56,7 +59,8 @@ function App() {
                     </ProtectedRoute>
                   } 
                 >
-                  <Route index element={<Navigate to="/admin/inventory" replace />} />
+                  <Route index element={<Navigate to="/admin/dashboard" replace />} />
+                  <Route path="dashboard" element={<Dashboard />} />
                   <Route path="inventory" element={<Inventory />} />
                   <Route path="collections" element={<Collections />} />
                   <Route path="orders" element={<Orders />} />

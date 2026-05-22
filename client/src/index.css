@@ -57,6 +57,12 @@ button {
   padding: 0 2rem;
 }
 
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
+}
+
 .premium-btn {
   padding: 1.2rem 2.5rem;
   background-color: var(--primary-black);

@@ -6,6 +6,35 @@ import { useCurrency } from '../context/CurrencyContext';
 import { createOrderApi } from '../utils/api';
 import './Checkout.css';
 
+// Popular international countries mapping to various Royal Mail zones
+const COUNTRIES = [
+    'United Kingdom',
+    'United States',
+    'Germany',
+    'France',
+    'Italy',
+    'Spain',
+    'Ireland',
+    'Netherlands',
+    'Sri Lanka',
+    'Australia',
+    'Canada',
+    'India',
+    'Singapore',
+    'Japan',
+    'New Zealand',
+    'South Africa',
+    'United Arab Emirates',
+    'Switzerland',
+    'Sweden',
+    'Norway',
+    'Denmark',
+    'Finland',
+    'Belgium',
+    'Austria',
+    'Portugal'
+];
+
 const Checkout = () => {
     const { cartItems, getCartTotal, clearCart } = useCart();
     const { user } = useAuth();
@@ -18,13 +47,15 @@ const Checkout = () => {
         address: '',
         city: '',
         postalCode: '',
-        country: 'United Kingdom', // Default to UK to showcase Royal Mail domestic instantly
+        country: 'United Kingdom', // Default country
         cardNumber: '',
         cardExpiry: '',
         cardCvc: '',
         cardName: ''
     });
 
+    const [suggestions, setSuggestions] = useState([]);
+    const [showSuggestions, setShowSuggestions] = useState(false);
     const [shippingMethods, setShippingMethods] = useState([]);
     const [selectedMethod, setSelectedMethod] = useState(null);
     const [processing, setProcessing] = useState(false);
@@ -107,6 +138,28 @@ const Checkout = () => {
 
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    // Country suggestion handlers
+    const handleCountryChange = (e) => {
+        const val = e.target.value;
+        setFormData(prev => ({ ...prev, country: val }));
+        
+        if (val.trim()) {
+            const filtered = COUNTRIES.filter(c => 
+                c.toLowerCase().includes(val.toLowerCase())
+            );
+            setSuggestions(filtered);
+            setShowSuggestions(true);
+        } else {
+            setSuggestions(COUNTRIES);
+            setShowSuggestions(true);
+        }
+    };
+
+    const selectCountry = (country) => {
+        setFormData(prev => ({ ...prev, country }));
+        setShowSuggestions(false);
     };
 
     const handleCheckoutSubmit = async (e) => {
@@ -257,16 +310,35 @@ const Checkout = () => {
                                 />
                             </div>
                         </div>
-                        <div className="form-group">
+                        <div className="form-group country-input-container">
                             <label>Country (Triggers Royal Mail Worldwide Rates)</label>
                             <input 
                                 type="text" 
                                 name="country" 
                                 value={formData.country} 
-                                onChange={handleInputChange} 
+                                onChange={handleCountryChange}
+                                onFocus={() => {
+                                    setSuggestions(COUNTRIES);
+                                    setShowSuggestions(true);
+                                }}
+                                onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
                                 required
                                 placeholder="e.g. United Kingdom, United States, Germany, Sri Lanka"
+                                autoComplete="off"
                             />
+                            {showSuggestions && suggestions.length > 0 && (
+                                <ul className="country-suggestions-list">
+                                    {suggestions.map((c, i) => (
+                                        <li 
+                                            key={i} 
+                                            className="country-suggestion-item"
+                                            onMouseDown={() => selectCountry(c)}
+                                        >
+                                            {c}
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
                         </div>
                     </div>
 

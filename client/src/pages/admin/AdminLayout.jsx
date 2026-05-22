@@ -12,6 +12,9 @@ const AdminLayout = () => {
                 <nav>
                     <ul>
                         <li>
+                            <Link to="/admin/dashboard" className={location.pathname === '/admin/dashboard' ? 'active' : ''}>Dashboard</Link>
+                        </li>
+                        <li>
                             <Link to="/admin/inventory" className={location.pathname === '/admin/inventory' ? 'active' : ''}>Inventory</Link>
                         </li>
                         <li>

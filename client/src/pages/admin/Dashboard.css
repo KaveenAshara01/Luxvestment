@@ -1,0 +1,476 @@
+.bi-dashboard {
+    padding: 0 1rem;
+    animation: fadeIn 0.8s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.bi-header {
+    margin-bottom: 3rem;
+}
+
+.bi-header h2 {
+    font-size: 2.2rem;
+    color: var(--primary-black);
+    margin-bottom: 0.5rem;
+}
+
+.bi-header .subtitle {
+    font-size: 0.9rem;
+    color: #666;
+    letter-spacing: 0.5px;
+}
+
+/* Loading & Error States */
+.bi-loading-container,
+.bi-error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    text-align: center;
+    background: #fff;
+    border-radius: 8px;
+    padding: 2rem;
+}
+
+.bi-error-container h3 {
+    color: #ff3b30;
+    margin-bottom: 1rem;
+}
+
+.luxury-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #f6f6f6;
+    border-top: 3px solid var(--luxury-gold);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1.5rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Metrics Grid */
+.bi-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.bi-metric-card {
+    background: #ffffff;
+    border: 1px solid #eeeeee;
+    padding: 2rem 1.5rem;
+    border-radius: 6px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.bi-metric-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+}
+
+.metric-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #777;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.metric-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+    color: var(--primary-black);
+    font-family: var(--font-sans);
+    letter-spacing: -0.5px;
+}
+
+.metric-value.gold-text {
+    color: var(--luxury-gold);
+}
+
+.metric-sub {
+    font-size: 0.75rem;
+    color: #888;
+    margin-top: auto;
+}
+
+/* Traffic Overview Component */
+.bi-traffic-overview {
+    display: flex;
+    align-items: center;
+    background: var(--gray-light);
+    padding: 1.5rem 2.5rem;
+    border-radius: 6px;
+    margin-bottom: 3rem;
+    gap: 4rem;
+}
+
+.traffic-widget {
+    display: flex;
+    flex-direction: column;
+}
+
+.widget-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #666;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+}
+
+.widget-number {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--primary-black);
+}
+
+.traffic-divider {
+    width: 1px;
+    height: 35px;
+    background: #dddddd;
+}
+
+/* Panels */
+.bi-panel {
+    background: #ffffff;
+    border: 1px solid #eeeeee;
+    border-radius: 6px;
+    padding: 2rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02);
+}
+
+.bi-panel h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary-black);
+    margin-bottom: 0.25rem;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.panel-sub {
+    font-size: 0.8rem;
+    color: #777;
+    margin-bottom: 2rem;
+}
+
+/* Secondary Grid (Charts) */
+.bi-secondary-grid {
+    display: grid;
+    grid-template-columns: 3.5fr 2.5fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+/* Weekly Trend Bar Chart */
+.bar-chart-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 250px;
+    padding-top: 2rem;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.chart-bar-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    height: 100%;
+}
+
+.chart-bar-wrapper {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    width: 100%;
+    height: calc(100% - 25px);
+}
+
+.chart-bar {
+    width: 32px;
+    background: var(--primary-black);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    transition: height 1s cubic-bezier(0.19, 1, 0.22, 1), background 0.3s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.chart-bar:hover {
+    background: var(--luxury-gold);
+}
+
+.bar-count-tag {
+    position: absolute;
+    top: -24px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--primary-black);
+    background: #f6f6f6;
+    padding: 0.15rem 0.35rem;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.chart-bar-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #666;
+    margin-top: 8px;
+    text-transform: uppercase;
+}
+
+/* Country demographics */
+.country-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.country-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.country-details {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.35rem;
+    font-size: 0.85rem;
+}
+
+.country-name {
+    font-weight: 600;
+    color: #333;
+}
+
+.country-count {
+    color: #777;
+    font-size: 0.8rem;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 6px;
+    background: #f6f6f6;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: var(--luxury-gold);
+    border-radius: 10px;
+    transition: width 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* Leaderboards styling */
+.bi-leaderboards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.ranking-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.ranking-item {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    border: 1px solid #f6f6f6;
+    border-radius: 6px;
+    transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.ranking-item:hover {
+    border-color: #e2e2e2;
+    background: #fafafa;
+}
+
+.rank-badge {
+    font-size: 0.85rem;
+    font-weight: 800;
+    width: 26px;
+    height: 26px;
+    background: #f6f6f6;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    color: #666;
+    flex-shrink: 0;
+}
+
+.rank-badge.gold {
+    background: #fff9ea;
+    color: var(--luxury-gold);
+    border: 1px solid #ffe9b8;
+}
+
+.rank-thumb {
+    width: 44px;
+    height: 44px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-right: 1rem;
+    background: #ffffff;
+    border: 1px solid #eeeeee;
+    flex-shrink: 0;
+}
+
+.rank-info {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    margin-right: 1.5rem;
+    flex-grow: 1;
+}
+
+.rank-name {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--primary-black);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.rank-meta {
+    font-size: 0.75rem;
+    color: #777;
+    margin-top: 2px;
+}
+
+.rank-score {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+
+.score-num {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary-black);
+    line-height: 1.1;
+}
+
+.score-num.count-text {
+    color: var(--luxury-gold);
+}
+
+.score-lbl {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #999;
+    font-weight: 600;
+}
+
+.empty-state-text {
+    text-align: center;
+    color: #888;
+    padding: 2rem 0;
+    font-size: 0.9rem;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1200px) {
+    .bi-metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+    
+    .bi-secondary-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .bi-dashboard {
+        padding: 0;
+    }
+    
+    .bi-header h2 {
+        font-size: 1.8rem;
+    }
+    
+    .bi-traffic-overview {
+        padding: 1.25rem 1.5rem;
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .bi-leaderboards-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .bi-panel {
+        padding: 1.5rem 1.25rem;
+    }
+    
+    .chart-bar {
+        width: 20px;
+    }
+    
+    .bar-count-tag {
+        font-size: 0.6rem;
+        top: -20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .bi-metrics-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .bi-traffic-overview {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .traffic-divider {
+        display: none;
+    }
+    
+    .chart-bar {
+        width: 14px;
+    }
+}

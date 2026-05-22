@@ -49,13 +49,31 @@
     .admin-layout-page {
         grid-template-columns: 1fr;
         padding-top: 4rem;
-    }
+        padding-bottom: 4rem;
+        gap: 2rem;
+      }
     .admin-sidebar {
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
+        padding: 1.5rem 1rem;
+    }
+    .admin-sidebar h2 {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+        text-align: center;
     }
     .admin-sidebar ul {
         display: flex;
-        gap: 1rem;
+        justify-content: center;
+        gap: 0.5rem;
         flex-wrap: wrap;
+    }
+    .admin-sidebar ul li {
+        margin-bottom: 0;
+        flex: 1 1 auto;
+    }
+    .admin-sidebar ul li a {
+        text-align: center;
+        font-size: 0.8rem;
+        padding: 0.6rem 0.5rem;
     }
 }

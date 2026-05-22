@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "install-all": "npm install --prefix client && npm install --prefix server",
     "client": "npm run dev --prefix client",
-    "server": "node server/index.js",
+    "server": "node --max-old-space-size=2048 server/index.js",
     "dev": "concurrently \"npm run client\" \"npm run server\"",
     "build-client": "npm run build --prefix client"
   },
