@@ -11,6 +11,8 @@ import Policies from './pages/Policies';
 import ProductDetail from './pages/ProductDetail';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Checkout from './pages/Checkout';
+import Profile from './pages/Profile';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminLayout from './pages/admin/AdminLayout';
 import Inventory from './pages/admin/Inventory';
@@ -18,15 +20,19 @@ import Collections from './pages/admin/Collections';
 import Orders from './pages/admin/Orders';
 import { AuthProvider } from './context/AuthContext';
 import { CurrencyProvider } from './context/CurrencyContext';
+import { CartProvider } from './context/CartContext';
+import CartDrawer from './components/CartDrawer';
 import './App.css';
 
 function App() {
   return (
     <AuthProvider>
       <CurrencyProvider>
-        <Router>
-          <div className="App">
-            <Header />
+        <CartProvider>
+          <Router>
+            <div className="App">
+              <Header />
+              <CartDrawer />
             <main>
               <Routes>
                 <Route path="/" element={<Home />} />
@@ -38,6 +44,8 @@ function App() {
                 <Route path="/policies" element={<Policies />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
                 
                 {/* Admin Routes */}
                 <Route 
@@ -56,9 +64,10 @@ function App() {
                 
               </Routes>
             </main>
-            <Footer />
-          </div>
-        </Router>
+              <Footer />
+            </div>
+          </Router>
+        </CartProvider>
       </CurrencyProvider>
     </AuthProvider>
   );

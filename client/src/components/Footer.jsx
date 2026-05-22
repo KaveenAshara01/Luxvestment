@@ -7,7 +7,7 @@ const Footer = () => {
             <div className="footer-container">
                 <div className="footer-left">
                     <div className="footer-logo">
-                        <img src="/logo.jpg" alt="Luxvestment" style={{ filter: 'invert(1) brightness(100)' }} />
+                        <img src="/logo.jpg" alt="Luxvestment" />
                     </div>
                     
                     <div className="footer-disclaimer">

@@ -2,11 +2,11 @@
   --primary-black: #000000;
   --luxury-gold: #C5A059;
   --accent-gold: #B58E3D;
-  --bg-cream: #F5F1E9;
+  --bg-cream: #ffffff; /* Redefined to pure white for ultra-premium luxury feel */
   --white: #ffffff;
   --gray-light: #f6f6f6;
   --text-main: #333333;
-  --font-serif: 'Poppins', sans-serif;
+  --font-serif: 'Playfair Display', serif; /* Luxurious high-fashion serif */
   --font-sans: 'Inter', sans-serif;
   --transition-smooth: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
 }

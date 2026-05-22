@@ -1,62 +1,131 @@
 .product-card-link {
     text-decoration: none;
     color: inherit;
+    display: block;
+    height: 100%;
 }
 
 .product-card-v2 {
     display: flex;
     flex-direction: column;
-    margin-bottom: 3rem;
+    height: 100%;
 }
 
+/* Image Wrapper Base */
 .card-image-wrapper {
     position: relative;
-    background: #f9f9f9;
-    aspect-ratio: 1/1;
     overflow: hidden;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.8rem;
+    border: 1px solid #000000;
+    background: #ffffff;
 }
 
 .card-image-wrapper img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    background-color: #ffffff;
     transition: transform 0.6s ease;
 }
 
 .product-card-v2:hover .card-image-wrapper img {
-    transform: scale(1.05);
+    transform: scale(1.02);
 }
 
+/* Short Variant (Section 1 - Small prices, big finds) */
+.card-image-wrapper.short {
+    aspect-ratio: 1/1; /* Shorter square aspect ratio */
+}
+
+/* Tall Variant (Section 2 - Hot Right Now) */
+.card-image-wrapper.tall {
+    aspect-ratio: 3/4; /* Higher rectangular aspect ratio */
+}
+
+/* Sold Out Badge */
 .sold-out-badge {
     position: absolute;
-    bottom: 1rem;
-    left: 1rem;
+    bottom: 0.8rem;
+    left: 0.8rem;
     background: black;
     color: white;
-    padding: 0.5rem 1rem;
-    font-size: 0.7rem;
-    text-transform: capitalize;
+    padding: 0.35rem 0.85rem;
+    font-size: 0.75rem;
     border-radius: 20px;
     font-weight: 500;
+    z-index: 2;
 }
 
+/* Content Area */
 .card-content-v2 {
-    padding-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    padding: 0 0.2rem;
 }
 
 .card-title {
     font-family: var(--font-sans);
-    font-size: 0.85rem;
-    font-weight: 600;
-    line-height: 1.4;
-    margin-bottom: 0.5rem;
-    text-transform: none; /* Reference shows sentence case */
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 0.2rem;
+    color: var(--primary-black);
+    text-transform: none;
     letter-spacing: 0;
 }
 
+.card-brand {
+    font-size: 0.65rem;
+    color: #777777;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
 .card-price {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     font-weight: 500;
-    color: #333;
+    color: #222222;
+}
+
+/* ==========================================================================
+   Home Page Card Refinements - Absolute Parity with girlseazon.com
+   ========================================================================== */
+
+.home .card-image-wrapper {
+    border: none !important; /* Completely remove the black border of the product cards */
+    margin: 0; /* Reset margins */
+    background-color: transparent;
+    border-radius: 0;
+}
+
+.home .card-image-wrapper img {
+    background-color: #ffffff;
+    padding: 0 !important; /* Fit the image in the card perfectly without padding */
+    object-fit: cover !important; /* Cover the entire container perfectly with no blank space */
+}
+
+.home .card-content-v2 {
+    padding: 0.8rem 0 1.5rem 0; /* elegant top and bottom padding below the images */
+}
+
+.home .card-title {
+    color: var(--primary-black) !important;
+    font-size: 0.85rem; /* elegant smaller typography matching target site */
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 0.3rem;
+}
+
+.home .card-price {
+    color: var(--primary-black) !important;
+    font-size: 0.85rem; /* elegant smaller typography matching target site */
+    font-weight: 600;
+}
+
+/* Sold out badge alignment on Home Page */
+.home .sold-out-badge {
+    bottom: 0.8rem;
+    left: 0.8rem;
 }

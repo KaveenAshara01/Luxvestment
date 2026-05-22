@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { fetchProductById, fetchProducts } from '../utils/api';
 import { useCurrency } from '../context/CurrencyContext';
+import { useCart } from '../context/CartContext';
 import ProductCard from '../components/ProductCard';
 import './ProductDetail.css';
 
 const ProductDetail = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
     const [product, setProduct] = useState(null);
     const [quantity, setQuantity] = useState(1);
     const [activeImg, setActiveImg] = useState(0);
     const [openAccordion, setOpenAccordion] = useState(null);
     const [relatedProducts, setRelatedProducts] = useState([]);
     const { convertPrice, selectedCurrency } = useCurrency();
+    const { addToCart } = useCart();
 
     useEffect(() => {
         const loadProductAndRelated = async () => {
@@ -33,6 +36,13 @@ const ProductDetail = () => {
 
     const toggleAccordion = (index) => {
         setOpenAccordion(openAccordion === index ? null : index);
+    };
+
+    const handleBuyNow = async () => {
+        const success = await addToCart(product, quantity);
+        if (success) {
+            navigate('/checkout');
+        }
     };
 
     return (
@@ -71,9 +81,15 @@ const ProductDetail = () => {
                         </div>
                     </div>
 
-                    <button className="add-to-cart-btn">Add to cart</button>
-                    <button className="buy-shop-btn">Buy with shop</button>
-                    <p className="payment-options">More payment options</p>
+                    <div className="detail-buttons-group">
+                        <button className="add-to-cart-btn" onClick={() => addToCart(product, quantity)}>
+                            Add to cart
+                        </button>
+                        <button className="buy-it-now-btn" onClick={handleBuyNow}>
+                            Buy it now
+                        </button>
+                    </div>
+                    <p className="payment-options">Secure credit & debit card checkout</p>
 
                     <div className="detail-description" dangerouslySetInnerHTML={{ __html: product.description }}>
                     </div>

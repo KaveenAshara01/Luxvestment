@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCurrency } from '../context/CurrencyContext';
+import { useCart } from '../context/CartContext';
 import './Header.css';
 
 const Header = () => {
@@ -9,7 +10,10 @@ const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { user, logout } = useAuth();
     const { selectedCurrency, changeCurrency, supportedCurrencies } = useCurrency();
+    const { cartItems, setIsCartOpen } = useCart();
     const navigate = useNavigate();
+
+    const totalItems = cartItems ? cartItems.reduce((acc, item) => acc + item.quantity, 0) : 0;
 
     useEffect(() => {
         const handleScroll = () => {
@@ -84,7 +88,7 @@ const Header = () => {
                             
                             {user ? (
                                 <div className="user-nav">
-                                    <span className="user-name">{user.name}</span>
+                                    <Link to="/profile" className="user-name">{user.name}</Link>
                                     <button onClick={handleLogout} className="logout-btn">Logout</button>
                                 </div>
                             ) : (
@@ -96,12 +100,15 @@ const Header = () => {
                                 </Link>
                             )}
 
-                            <button className="icon-btn cart-btn">
+                            <button className="icon-btn cart-btn" onClick={() => setIsCartOpen(true)} style={{ position: 'relative' }}>
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                                     <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4H6z"></path>
                                     <line x1="3" y1="6" x2="21" y2="6"></line>
                                     <path d="M16 10a4 4 0 0 1-8 0"></path>
                                 </svg>
+                                {totalItems > 0 && (
+                                    <span className="cart-badge">{totalItems}</span>
+                                )}
                             </button>
                         </div>
                     </div>

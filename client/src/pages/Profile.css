@@ -1,0 +1,144 @@
+.profile-page {
+    padding-top: 4rem;
+    padding-bottom: 8rem;
+    min-height: 70vh;
+}
+
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    padding-bottom: 2rem;
+    margin-bottom: 4rem;
+}
+
+.profile-header h1 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.user-email {
+    font-size: 1rem;
+    color: #666;
+}
+
+.logout-pill {
+    background: white;
+    color: black;
+    border: 1px solid black;
+}
+
+.logout-pill:hover {
+    background: black;
+    color: white;
+}
+
+.orders-section h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+}
+
+.empty-orders {
+    text-align: center;
+    padding: 6rem 0;
+    background: white;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 6px;
+}
+
+.empty-orders p {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+.orders-table-wrapper {
+    background: white;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+}
+
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.orders-table th {
+    background: #fbfbfb;
+    padding: 1.4rem 2rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #555;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.orders-table td {
+    padding: 1.6rem 2rem;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    font-size: 0.95rem;
+    vertical-align: middle;
+}
+
+.orders-table tr:last-child td {
+    border-bottom: none;
+}
+
+.order-id-col {
+    font-weight: 700;
+    font-family: monospace;
+    font-size: 1.05rem;
+    color: black;
+}
+
+.order-items-col {
+    max-width: 300px;
+    color: #444;
+    line-height: 1.4;
+}
+
+.order-total-col {
+    font-weight: 600;
+}
+
+/* Status Badges */
+.status-badge {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.status-processing {
+    background: #fff8e1;
+    color: #f57f17;
+    border: 1px solid #ffe082;
+}
+
+.status-shipped {
+    background: #e3f2fd;
+    color: #1565c0;
+    border: 1px solid #90caf9;
+}
+
+.status-delivered {
+    background: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #a5d6a7;
+}
+
+.status-cancelled {
+    background: #ffebee;
+    color: #c62828;
+    border: 1px solid #ef9a9a;
+}

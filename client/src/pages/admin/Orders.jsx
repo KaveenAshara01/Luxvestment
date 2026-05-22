@@ -51,7 +51,8 @@ const Orders = () => {
                         <thead>
                             <tr>
                                 <th>Order ID</th>
-                                <th>Customer</th>
+                                <th>Customer & Shipping</th>
+                                <th>Items Ordered</th>
                                 <th>Total</th>
                                 <th>Status</th>
                                 <th>Date</th>
@@ -60,21 +61,42 @@ const Orders = () => {
                         <tbody>
                             {orders.length === 0 ? (
                                 <tr>
-                                    <td colSpan="5" style={{ textAlign: 'center', padding: '2rem' }}>No orders found.</td>
+                                    <td colSpan="6" style={{ textAlign: 'center', padding: '2rem' }}>No orders found.</td>
                                 </tr>
                             ) : (
                                 orders.map(order => (
                                     <tr key={order._id}>
-                                        <td>{order._id.substring(order._id.length - 8)}</td>
                                         <td>
-                                            {order.customerName}<br/>
-                                            <small>{order.customerEmail}</small>
+                                            <strong>#{order._id.substring(order._id.length - 8)}</strong>
+                                            <br />
+                                            <span style={{fontSize: '0.7rem', color: '#666'}}>
+                                                {order.userId ? 'Registered User' : 'Guest Checkout'}
+                                            </span>
                                         </td>
-                                        <td>Rs {order.totalAmount ? order.totalAmount.toLocaleString() : '0'}</td>
+                                        <td>
+                                            <strong>{order.customerName}</strong> (<small>{order.customerEmail}</small>)
+                                            <br />
+                                            <span style={{fontSize: '0.8rem', color: '#555'}}>
+                                                {order.shippingAddress ? `${order.shippingAddress.address}, ${order.shippingAddress.city}, ${order.shippingAddress.country}` : 'N/A'}
+                                            </span>
+                                            <br />
+                                            <span style={{fontSize: '0.75rem', color: '#888'}}>Paid via {order.paymentMethod || 'Card'}</span>
+                                        </td>
+                                        <td>
+                                            <div style={{maxHeight: '100px', overflowY: 'auto', fontSize: '0.85rem'}}>
+                                                {order.products.map((p, idx) => (
+                                                    <div key={idx} style={{marginBottom: '4px'}}>
+                                                        • {p.product ? p.product.name : 'Item'} (x{p.quantity}) - Rs {p.price ? p.price.toLocaleString() : 0}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </td>
+                                        <td><strong>Rs {order.totalAmount ? order.totalAmount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) : '0.00'}</strong></td>
                                         <td>
                                             <select 
                                                 value={order.status} 
                                                 onChange={(e) => handleStatusChange(order._id, e.target.value)}
+                                                className="status-dropdown"
                                             >
                                                 <option value="Pending">Pending</option>
                                                 <option value="Processing">Processing</option>

@@ -22,11 +22,13 @@ const productRoutes = require('./routes/productRoutes');
 const authRoutes = require('./routes/authRoutes');
 const collectionRoutes = require('./routes/collectionRoutes');
 const orderRoutes = require('./routes/orderRoutes');
+const cartRoutes = require('./routes/cartRoutes');
 
 app.use('/api/products', productRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/collections', collectionRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/cart', cartRoutes);
 
 // Static assets
 app.use(express.static(path.join(__dirname, '../client/dist'), { index: false }));

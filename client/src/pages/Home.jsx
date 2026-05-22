@@ -5,15 +5,22 @@ import ProductCard from '../components/ProductCard';
 import './Home.css';
 
 const Home = () => {
-    const [products, setProducts] = useState([]);
+    const [latestProducts, setLatestProducts] = useState([]);
+    const [hotProducts, setHotProducts] = useState([]);
 
     useEffect(() => {
         const loadProducts = async () => {
             const data = await fetchProducts();
             if (Array.isArray(data)) {
-                setProducts(data.slice(0, 4));
+                // Keep the first section showing the first 4 products
+                setLatestProducts(data.slice(0, 4));
+                
+                // Shuffle the entire catalog to display 4 random products in "Hot Right Now"
+                const shuffled = [...data].sort(() => 0.5 - Math.random());
+                setHotProducts(shuffled.slice(0, 4));
             } else {
-                setProducts([]);
+                setLatestProducts([]);
+                setHotProducts([]);
             }
         };
         loadProducts();
@@ -43,14 +50,14 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* Featured Section */}
+            {/* Featured Section 1 */}
             <section className="featured container">
                 <div className="section-header">
-                    <h2>Latest Curations</h2>
+                    <h2 className="edit-title">Small prices, big finds — shop the edit now.</h2>
                 </div>
-                <div className="archive-grid">
-                    {Array.isArray(products) && products.map((product) => (
-                        <ProductCard key={product._id} product={product} />
+                <div className="home-product-grid">
+                    {Array.isArray(latestProducts) && latestProducts.map((product) => (
+                        <ProductCard key={product._id} product={product} variant="short" showBrand={false} />
                     ))}
                 </div>
                 <div className="view-all-container">
@@ -58,6 +65,22 @@ const Home = () => {
                 </div>
             </section>
 
+            {/* Mission Statement */}
+            <section className="mission-statement container">
+                <p>
+                    <em>Authenticated, curated vintage designer bags, wallets, purses, and sunglasses<br/>—timeless pieces with true character.</em>
+                </p>
+            </section>
+
+            {/* Hot Right Now Section */}
+            <section className="hot-right-now container">
+                <h2 className="hot-title">Hot Right Now 🌶️</h2>
+                <div className="home-product-grid">
+                    {Array.isArray(hotProducts) && hotProducts.map((product) => (
+                        <ProductCard key={product._id} product={product} variant="tall" showBrand={false} />
+                    ))}
+                </div>
+            </section>
 
         </div>
     );

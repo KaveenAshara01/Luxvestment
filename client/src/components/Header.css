@@ -251,3 +251,20 @@
     font-weight: 500;
     padding: 8px;
 }
+
+/* Cart Badge */
+.cart-badge {
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    background: black;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 700;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
