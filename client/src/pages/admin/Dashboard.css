@@ -428,7 +428,8 @@
     }
     
     .bi-header h2 {
-        font-size: 1.8rem;
+        font-size: 1.35rem;
+        letter-spacing: 1px;
     }
     
     .bi-traffic-overview {

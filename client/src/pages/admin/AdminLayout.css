@@ -69,14 +69,23 @@
         justify-content: flex-start;
         gap: 0.5rem;
         overflow-x: auto;
-        padding: 0.35rem 0.1rem;
+        padding: 0.35rem 0.1rem 0.6rem 0.1rem;
         margin-bottom: 1rem;
         border-bottom: 1px solid #eaeaea;
         -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
+        scrollbar-width: thin;
+        scrollbar-color: var(--luxury-gold) rgba(0, 0, 0, 0.03);
     }
     .admin-sidebar ul::-webkit-scrollbar {
-        display: none;
+        display: block;
+        height: 3px;
+    }
+    .admin-sidebar ul::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.03);
+    }
+    .admin-sidebar ul::-webkit-scrollbar-thumb {
+        background: var(--luxury-gold);
+        border-radius: 10px;
     }
     .admin-sidebar ul li {
         margin-bottom: 0;

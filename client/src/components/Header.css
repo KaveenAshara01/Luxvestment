@@ -314,3 +314,19 @@
         display: none !important;
     }
 }
+
+/* Specific overrides for extra small mobile viewports (e.g. iPhone SE) */
+@media (max-width: 375px) {
+    .logo {
+        height: 40px !important;
+    }
+    .header-icons {
+        gap: 0.45rem !important;
+    }
+    .logout-btn {
+        font-size: 0.58rem !important;
+    }
+    .header-container {
+        padding: 0 0.5rem !important;
+    }
+}
