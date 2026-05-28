@@ -108,6 +108,8 @@
     border-bottom: 1px solid #eee;
     font-size: 0.95rem;
     vertical-align: middle;
+    word-break: break-word;
+    max-width: 300px;
 }
 
 .admin-list select {

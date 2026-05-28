@@ -358,6 +358,7 @@
     overflow: hidden;
     margin-right: 1.5rem;
     flex-grow: 1;
+    min-width: 0;
 }
 
 .rank-name {

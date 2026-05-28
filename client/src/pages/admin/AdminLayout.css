@@ -48,25 +48,30 @@
 @media (max-width: 768px) {
     .admin-layout-page {
         grid-template-columns: 1fr;
-        padding-top: 4rem;
+        padding-top: 2rem;
         padding-bottom: 4rem;
-        gap: 2rem;
+        gap: 1.5rem;
       }
     .admin-sidebar {
-        margin-bottom: 1rem;
-        padding: 1.5rem 1rem;
+        background: transparent;
+        border: none;
+        padding: 0;
+        margin-bottom: 0.5rem;
     }
     .admin-sidebar h2 {
         font-size: 1.2rem;
         margin-bottom: 1rem;
-        text-align: center;
+        text-align: left;
+        letter-spacing: 1px;
     }
     .admin-sidebar ul {
         display: flex;
         justify-content: flex-start;
         gap: 0.5rem;
         overflow-x: auto;
-        padding: 0.25rem 0;
+        padding: 0.35rem 0.1rem;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid #eaeaea;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
     }
@@ -79,7 +84,21 @@
     }
     .admin-sidebar ul li a {
         text-align: center;
-        font-size: 0.8rem;
-        padding: 0.6rem 1rem;
+        font-size: 0.72rem;
+        font-weight: 700;
+        padding: 0.5rem 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 30px;
+        background: #fbfbfb;
+        color: #555;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+    }
+    .admin-sidebar ul li a:hover,
+    .admin-sidebar ul li a.active {
+        background: var(--primary-black);
+        color: white;
+        border-color: var(--primary-black);
     }
 }

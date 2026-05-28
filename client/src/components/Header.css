@@ -268,3 +268,29 @@
     align-items: center;
     justify-content: center;
 }
+
+/* Mobile responsive navigation overrides */
+@media (max-width: 768px) {
+    .logo {
+        height: 48px;
+    }
+    .scrolled .logo {
+        height: 38px;
+    }
+    .header-icons {
+        gap: 0.8rem;
+    }
+    .user-nav {
+        gap: 0.5rem;
+    }
+    .user-name {
+        display: none !important;
+    }
+    .logout-btn {
+        font-size: 0.65rem;
+        padding-bottom: 1px;
+    }
+    .header-container {
+        padding: 0 1rem;
+    }
+}
