@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const stripe = require('stripe');
 const { protect } = require('../middleware/authMiddleware');
 
 // Zero-decimal currencies list
@@ -8,6 +8,15 @@ const ZERO_DECIMAL_CURRENCIES = [
     'bif', 'clp', 'djf', 'gnf', 'jpy', 'kmf', 'krw', 'mga',
     'pyg', 'rwf', 'ugx', 'vnd', 'vuv', 'xaf', 'xof', 'xpf'
 ];
+
+// Lazy getter for Stripe client to prevent server crashes if key is initially missing
+const getStripeClient = () => {
+    const apiKey = process.env.STRIPE_SECRET_KEY;
+    if (!apiKey) {
+        throw new Error('Stripe API Secret Key (STRIPE_SECRET_KEY) is not defined in the environment variables.');
+    }
+    return stripe(apiKey);
+};
 
 // POST create payment intent
 router.post('/create-payment-intent', async (req, res) => {
@@ -28,8 +37,11 @@ router.post('/create-payment-intent', async (req, res) => {
             stripeAmount = Math.round(amount * 100);
         }
 
+        // Get lazy Stripe client instance
+        const stripeClient = getStripeClient();
+
         // Create a PaymentIntent with the order amount and currency
-        const paymentIntent = await stripe.paymentIntents.create({
+        const paymentIntent = await stripeClient.paymentIntents.create({
             amount: stripeAmount,
             currency: currencyCode,
             automatic_payment_methods: {
