@@ -1,0 +1,113 @@
+.toast-wrapper {
+    position: fixed;
+    top: 6.5rem; /* Just below header */
+    right: 2rem;
+    z-index: 9999;
+    pointer-events: none;
+    max-width: 400px;
+    width: calc(100vw - 4rem);
+    animation: toastSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.toast-card {
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.2rem;
+    background: rgba(17, 17, 17, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid #ebdcb9; /* Luxury light gold border */
+    padding: 1rem 1.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    border-radius: 0px; /* Pure premium straight edges */
+}
+
+.toast-card.warning {
+    border-color: #ebdcb9;
+}
+
+.toast-card.error {
+    border-color: #eba3a3;
+}
+
+.toast-body {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.toast-icon {
+    flex-shrink: 0;
+}
+
+.toast-card.warning .toast-icon {
+    color: #ebdcb9;
+}
+
+.toast-card.error .toast-icon {
+    color: #eba3a3;
+}
+
+.toast-message {
+    color: #ffffff;
+    font-family: var(--font-sans, sans-serif);
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0.5px;
+}
+
+.toast-close-btn {
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    color: #ffffff;
+    opacity: 0.6;
+    transition: all 0.2s ease;
+    padding: 0;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+}
+
+.toast-close-btn:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+@keyframes toastSlideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@media (max-width: 600px) {
+    .toast-wrapper {
+        top: auto;
+        bottom: 2rem;
+        right: 1rem;
+        left: 1rem;
+        width: auto;
+        max-width: none;
+        animation: toastMobileSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    
+    @keyframes toastMobileSlideUp {
+        from {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+}

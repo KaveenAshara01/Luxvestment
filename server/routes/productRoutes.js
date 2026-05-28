@@ -64,7 +64,7 @@ router.put('/:id', protect, adminOnly, upload.array('images', 5), async (req, re
         }
 
         product.name = name || product.name;
-        product.description = description || product.description;
+        product.description = description !== undefined ? description : product.description;
         product.price = price || product.price;
         product.stock = stock !== undefined ? stock : product.stock;
         if (collectionId !== undefined) product.collectionId = collectionId || null;

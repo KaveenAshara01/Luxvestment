@@ -20,9 +20,13 @@ const ProductCard = ({ product, variant = 'short', showBrand = false }) => {
     return (
         <Link to={`/product/${product._id}`} className={`product-card-link ${variant}`}>
             <div className={`product-card-v2 ${variant}`}>
-                <div className={`card-image-wrapper ${variant}`}>
+                <div className={`card-image-wrapper ${variant} ${isSoldOut ? 'sold-out' : ''}`}>
                     <img src={product.images[0]?.url} alt={product.name} />
-                    {isSoldOut && <div className="sold-out-badge">Sold out</div>}
+                    {isSoldOut && (
+                        <div className="sold-out-overlay">
+                            <span className="sold-out-tag">Out of Stock</span>
+                        </div>
+                    )}
                 </div>
                 <div className={`card-content-v2 ${variant}`}>
                     <h3 className="card-title">{product.name}</h3>

@@ -24,6 +24,7 @@ import { AuthProvider } from './context/AuthContext';
 import { CurrencyProvider } from './context/CurrencyContext';
 import { CartProvider } from './context/CartContext';
 import CartDrawer from './components/CartDrawer';
+import ToastNotification from './components/ToastNotification';
 import ScrollToTop from './components/ScrollToTop';
 import './App.css';
 
@@ -38,6 +39,7 @@ function App() {
             <div className="App">
               <Header />
               <CartDrawer />
+              <ToastNotification />
             <main>
               <Routes>
                 <Route path="/" element={<Home />} />

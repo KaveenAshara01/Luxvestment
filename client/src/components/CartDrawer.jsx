@@ -6,7 +6,16 @@ import { useAuth } from '../context/AuthContext';
 import './CartDrawer.css';
 
 const CartDrawer = () => {
-    const { cartItems, isCartOpen, setIsCartOpen, updateQuantity, removeFromCart, getCartTotal } = useCart();
+    const { 
+        cartItems, 
+        isCartOpen, 
+        setIsCartOpen, 
+        updateQuantity, 
+        removeFromCart, 
+        getCartTotal,
+        cartNotification,
+        setCartNotification
+    } = useCart();
     const { convertPrice, selectedCurrency } = useCurrency();
     const { user } = useAuth();
     const navigate = useNavigate();
@@ -32,6 +41,20 @@ const CartDrawer = () => {
                         </svg>
                     </button>
                 </div>
+
+                {cartNotification && (
+                    <div className={`cart-inline-alert ${cartNotification.type}`}>
+                        <div className="alert-message-content">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                            </svg>
+                            <span>{cartNotification.message}</span>
+                        </div>
+                        <button className="clear-alert-btn" onClick={() => setCartNotification(null)}>×</button>
+                    </div>
+                )}
 
                 <div className="cart-content">
                     {cartItems.length === 0 ? (

@@ -17,6 +17,21 @@ export const CartProvider = ({ children }) => {
     const [cartItems, setCartItems] = useState([]);
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [cartNotification, setCartNotification] = useState(null);
+
+    const showNotification = (message, type = 'warning') => {
+        setCartNotification({ message, type, id: Date.now() });
+    };
+
+    // Auto clear notification after 4.5 seconds
+    useEffect(() => {
+        if (cartNotification) {
+            const timer = setTimeout(() => {
+                setCartNotification(null);
+            }, 4500);
+            return () => clearTimeout(timer);
+        }
+    }, [cartNotification]);
 
     // Load cart on user change or mount
     useEffect(() => {
@@ -56,7 +71,7 @@ export const CartProvider = ({ children }) => {
             // Verify stock
             const latestProd = await fetchProductById(product._id);
             if (!latestProd || latestProd.stock < quantity) {
-                alert(`Cannot add to cart. Only ${latestProd ? latestProd.stock : 0} items available in stock.`);
+                showNotification(`Cannot add to cart. Only ${latestProd ? latestProd.stock : 0} items available in stock.`, 'warning');
                 return false;
             }
 
@@ -69,7 +84,7 @@ export const CartProvider = ({ children }) => {
                 if (existingIndex > -1) {
                     const newQty = items[existingIndex].quantity + quantity;
                     if (newQty > latestProd.stock) {
-                        alert(`Cannot add more. Only ${latestProd.stock} available.`);
+                        showNotification(`Cannot add more. Only ${latestProd.stock} items available.`, 'warning');
                         return false;
                     }
                     items[existingIndex].quantity = newQty;
@@ -81,7 +96,7 @@ export const CartProvider = ({ children }) => {
             setIsCartOpen(true);
             return true;
         } catch (err) {
-            alert(err.response?.data?.message || 'Error adding to cart');
+            showNotification(err.response?.data?.message || 'Error adding to cart', 'error');
             return false;
         }
     };
@@ -92,7 +107,7 @@ export const CartProvider = ({ children }) => {
         try {
             const latestProd = await fetchProductById(productId);
             if (!latestProd || latestProd.stock < quantity) {
-                alert(`Only ${latestProd ? latestProd.stock : 0} available in stock.`);
+                showNotification(`Only ${latestProd ? latestProd.stock : 0} available in stock.`, 'warning');
                 return;
             }
 
@@ -108,7 +123,7 @@ export const CartProvider = ({ children }) => {
                 }
             }
         } catch (err) {
-            alert(err.response?.data?.message || 'Error updating quantity');
+            showNotification(err.response?.data?.message || 'Error updating quantity', 'error');
         }
     };
 
@@ -157,7 +172,10 @@ export const CartProvider = ({ children }) => {
             removeFromCart,
             clearCart,
             getCartTotal,
-            loading
+            loading,
+            cartNotification,
+            setCartNotification,
+            showNotification
         }}>
             {children}
         </CartContext.Provider>
