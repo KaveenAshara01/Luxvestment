@@ -122,4 +122,8 @@
         padding-left: 0;
         border-bottom: 2px solid var(--primary-black);
     }
+    .archive-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.5rem !important;
+    }
 }
