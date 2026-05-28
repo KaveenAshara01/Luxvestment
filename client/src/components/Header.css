@@ -278,19 +278,39 @@
         height: 38px;
     }
     .header-icons {
-        gap: 0.8rem;
+        gap: 0.6rem;
     }
     .user-nav {
-        gap: 0.5rem;
+        gap: 0.4rem;
     }
     .user-name {
         display: none !important;
     }
     .logout-btn {
-        font-size: 0.65rem;
+        font-size: 0.62rem;
         padding-bottom: 1px;
     }
     .header-container {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        grid-template-columns: none !important;
         padding: 0 1rem;
+    }
+    .header-left, .header-right {
+        flex: 0 0 auto !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+    .logo-container {
+        flex: 1 1 auto !important;
+        text-align: center !important;
+    }
+    .top-bar {
+        padding: 8px 1rem !important;
+        font-size: 0.6rem !important;
+    }
+    .top-bar-left {
+        display: none !important;
     }
 }
