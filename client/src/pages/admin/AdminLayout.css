@@ -65,37 +65,24 @@
         letter-spacing: 1px;
     }
     .admin-sidebar ul {
-        display: flex;
-        justify-content: flex-start;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
         gap: 0.5rem;
-        overflow-x: auto;
-        padding: 0.35rem 0.1rem 0.6rem 0.1rem;
+        padding: 0.5rem 0.1rem;
         margin-bottom: 1rem;
         border-bottom: 1px solid #eaeaea;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: thin;
-        scrollbar-color: var(--luxury-gold) rgba(0, 0, 0, 0.03);
-    }
-    .admin-sidebar ul::-webkit-scrollbar {
-        display: block;
-        height: 3px;
-    }
-    .admin-sidebar ul::-webkit-scrollbar-track {
-        background: rgba(0, 0, 0, 0.03);
-    }
-    .admin-sidebar ul::-webkit-scrollbar-thumb {
-        background: var(--luxury-gold);
-        border-radius: 10px;
     }
     .admin-sidebar ul li {
         margin-bottom: 0;
-        flex: 0 0 auto;
+        width: 100%;
     }
     .admin-sidebar ul li a {
+        display: block;
+        width: 100%;
         text-align: center;
         font-size: 0.72rem;
         font-weight: 700;
-        padding: 0.5rem 1rem;
+        padding: 0.6rem 0.5rem;
         border: 1px solid #e0e0e0;
         border-radius: 30px;
         background: #fbfbfb;
