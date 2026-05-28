@@ -43,6 +43,7 @@
 
 .admin-content {
     background: white;
+    min-width: 0;
 }
 
 @media (max-width: 1024px) {
@@ -51,6 +52,8 @@
         padding-top: 2rem;
         padding-bottom: 4rem;
         gap: 1.5rem;
+        max-width: 100% !important;
+        overflow-x: hidden !important;
       }
     .admin-sidebar {
         background: transparent;
@@ -96,5 +99,10 @@
         background: var(--primary-black);
         color: white;
         border-color: var(--primary-black);
+    }
+    .admin-content {
+        max-width: 100% !important;
+        overflow-x: hidden !important;
+        padding: 0 !important;
     }
 }
