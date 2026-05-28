@@ -24,6 +24,7 @@ const collectionRoutes = require('./routes/collectionRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const analyticsRoutes = require('./routes/analyticsRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
 
 app.use('/api/products', productRoutes);
 app.use('/api/auth', authRoutes);
@@ -31,6 +32,7 @@ app.use('/api/collections', collectionRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/system', analyticsRoutes);
+app.use('/api/payments', paymentRoutes);
 
 // Static assets
 app.use(express.static(path.join(__dirname, '../client/dist'), { index: false }));

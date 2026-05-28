@@ -3,8 +3,16 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useCurrency } from '../context/CurrencyContext';
-import { createOrderApi } from '../utils/api';
+import { createOrderApi, createPaymentIntentApi } from '../utils/api';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import './Checkout.css';
+
+// Initialize Stripe Promise defensively
+const stripePromise = loadStripe(
+    import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || 
+    'pk_test_51TbO2qLoDicbLnKcEgBcsV0q5mhYl9JJ7VChtZjCaQ8fDUtX9FpSqEMhdj4mp3cWXj1QK1YFxo63XmpSvv3i4tyL00Lgo4RjDF'
+);
 
 // Popular international countries mapping to various Royal Mail zones
 const COUNTRIES = [
@@ -35,6 +43,125 @@ const COUNTRIES = [
     'Portugal'
 ];
 
+// Inner component for Stripe Credit Card checkout
+const StripeCheckoutForm = ({ 
+    formData, 
+    cartItems, 
+    clearCart, 
+    total, 
+    selectedCurrency, 
+    shippingCostConverted, 
+    selectedMethod, 
+    setSuccessOrder, 
+    setErrorMsg 
+}) => {
+    const stripe = useStripe();
+    const elements = useElements();
+    const [processing, setProcessing] = useState(false);
+
+    const handlePaySubmit = async (e) => {
+        e.preventDefault();
+
+        if (!stripe || !elements) {
+            return;
+        }
+
+        setProcessing(true);
+        setErrorMsg('');
+
+        try {
+            // Confirm secure card payment
+            const { error, paymentIntent } = await stripe.confirmPayment({
+                elements,
+                confirmParams: {
+                    payment_method_data: {
+                        billing_details: {
+                            name: formData.customerName,
+                            email: formData.customerEmail,
+                            address: {
+                                line1: formData.address,
+                                city: formData.city,
+                                postal_code: formData.postalCode,
+                                country: formData.country === 'United Kingdom' ? 'GB' : 'US'
+                            }
+                        }
+                    }
+                },
+                redirect: 'if_required'
+            });
+
+            if (error) {
+                setErrorMsg(error.message);
+                setProcessing(false);
+                return;
+            }
+
+            if (paymentIntent && paymentIntent.status === 'succeeded') {
+                // Prepare order payload for DB
+                const orderItems = cartItems.map(item => ({
+                    product: item.product._id,
+                    name: item.product.name,
+                    quantity: item.quantity,
+                    price: item.product.price
+                }));
+
+                const shippingMethodLabel = selectedMethod 
+                    ? `${selectedMethod.name} (${selectedCurrency === 'LKR' ? 'Rs ' : selectedCurrency + ' '}${shippingCostConverted.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})})`
+                    : 'Free Standard Shipping';
+
+                const orderPayload = {
+                    customerName: formData.customerName,
+                    customerEmail: formData.customerEmail,
+                    shippingAddress: {
+                        address: formData.address,
+                        city: formData.city,
+                        postalCode: formData.postalCode,
+                        country: formData.country
+                    },
+                    paymentMethod: `Stripe Credit Card (${paymentIntent.payment_method_types?.[0] || 'card'}) [via ${shippingMethodLabel}]`,
+                    items: orderItems,
+                    totalAmount: total
+                };
+
+                const createdOrder = await createOrderApi(orderPayload);
+                await clearCart();
+                setProcessing(false);
+                setSuccessOrder(createdOrder);
+            }
+        } catch (err) {
+            console.error('Stripe placement error:', err);
+            setErrorMsg(err.response?.data?.message || 'Error processing card authorization or updating database.');
+            setProcessing(false);
+        }
+    };
+
+    return (
+        <form onSubmit={handlePaySubmit} className="stripe-payment-form">
+            <div className="form-section">
+                <div className="payment-header">
+                    <h3>4. Secure Card Payment</h3>
+                    <div className="card-icons">
+                        <span>VISA</span>
+                        <span>MC</span>
+                        <span>AMEX</span>
+                    </div>
+                </div>
+                <div className="stripe-element-wrapper" style={{ margin: '1.5rem 0', minHeight: '150px' }}>
+                    <PaymentElement />
+                </div>
+            </div>
+
+            <button type="submit" className="complete-order-btn" disabled={processing || !stripe || !elements}>
+                {processing ? (
+                    <span className="spinner-text">Authorizing Card...</span>
+                ) : (
+                    `Complete Secure Payment`
+                )}
+            </button>
+        </form>
+    );
+};
+
 const Checkout = () => {
     const { cartItems, getCartTotal, clearCart } = useCart();
     const { user } = useAuth();
@@ -47,11 +174,7 @@ const Checkout = () => {
         address: '',
         city: '',
         postalCode: '',
-        country: 'United Kingdom', // Default country
-        cardNumber: '',
-        cardExpiry: '',
-        cardCvc: '',
-        cardName: ''
+        country: 'United Kingdom' // Default country
     });
 
     const [suggestions, setSuggestions] = useState([]);
@@ -61,6 +184,7 @@ const Checkout = () => {
     const [processing, setProcessing] = useState(false);
     const [successOrder, setSuccessOrder] = useState(null);
     const [errorMsg, setErrorMsg] = useState('');
+    const [clientSecret, setClientSecret] = useState('');
 
     useEffect(() => {
         if (user) {
@@ -113,7 +237,16 @@ const Checkout = () => {
         } else {
             setSelectedMethod(null);
         }
+        
+        // Reset Stripe client secret if country/shipping changes to ensure updated calculations
+        setClientSecret('');
     }, [formData.country]);
+
+    // Reset Stripe client secret if selected shipping method changes (affects total)
+    const handleShippingMethodChange = (method) => {
+        setSelectedMethod(method);
+        setClientSecret('');
+    };
 
     if (cartItems.length === 0 && !successOrder) {
         return (
@@ -138,12 +271,14 @@ const Checkout = () => {
 
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+        setClientSecret(''); // Reset client secret since user updated details
     };
 
     // Country suggestion handlers
     const handleCountryChange = (e) => {
         const val = e.target.value;
         setFormData(prev => ({ ...prev, country: val }));
+        setClientSecret(''); // Reset client secret
         
         if (val.trim()) {
             const filtered = COUNTRIES.filter(c => 
@@ -160,53 +295,33 @@ const Checkout = () => {
     const selectCountry = (country) => {
         setFormData(prev => ({ ...prev, country }));
         setShowSuggestions(false);
+        setClientSecret(''); // Reset client secret
     };
 
-    const handleCheckoutSubmit = async (e) => {
+    // Triggered when user clicks "Proceed to Payment" to initialize Stripe
+    const handleProceedToPayment = async (e) => {
         e.preventDefault();
         setErrorMsg('');
 
-        if (!formData.customerName || !formData.customerEmail || !formData.address || !formData.cardNumber) {
-            setErrorMsg('Please fill in all required shipping and payment details.');
+        if (!formData.customerName || !formData.customerEmail || !formData.address || !formData.city || !formData.postalCode) {
+            setErrorMsg('Please fill in all required shipping and contact details.');
             return;
         }
 
         setProcessing(true);
 
         try {
-            // Prepare order data
-            const orderItems = cartItems.map(item => ({
-                product: item.product._id,
-                name: item.product.name,
-                quantity: item.quantity,
-                price: item.product.price
-            }));
+            const data = await createPaymentIntentApi({
+                amount: total,
+                currency: selectedCurrency || 'GBP'
+            });
 
-            const shippingMethodLabel = selectedMethod 
-                ? `${selectedMethod.name} (${selectedCurrency === 'LKR' ? 'Rs ' : selectedCurrency + ' '}${shippingCostConverted.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})})`
-                : 'Free Standard Shipping';
-
-            const orderPayload = {
-                customerName: formData.customerName,
-                customerEmail: formData.customerEmail,
-                shippingAddress: {
-                    address: formData.address,
-                    city: formData.city,
-                    postalCode: formData.postalCode,
-                    country: formData.country
-                },
-                paymentMethod: `Credit Card (${formData.cardNumber.slice(-4)}) [via ${shippingMethodLabel}]`,
-                items: orderItems,
-                totalAmount: total
-            };
-
-            const createdOrder = await createOrderApi(orderPayload);
-            await clearCart();
+            setClientSecret(data.clientSecret);
             setProcessing(false);
-            setSuccessOrder(createdOrder);
         } catch (err) {
+            console.error('Stripe initialization failed:', err);
+            setErrorMsg(err.response?.data?.message || 'Failed to initialize secure Stripe payment gateway.');
             setProcessing(false);
-            setErrorMsg(err.response?.data?.message || 'Error processing your payment or verifying stock.');
         }
     };
 
@@ -222,7 +337,7 @@ const Checkout = () => {
                     <h1>Payment Successful!</h1>
                     <p className="order-num">Order #{successOrder._id.substring(successOrder._id.length - 8)}</p>
                     <p className="success-note">
-                        Thank you for your purchase. Your payment was authorized successfully via credit/debit card, and your items are being prepared for Royal Mail shipment.
+                        Thank you for your purchase. Your payment was authorized successfully via Stripe (Visa/Mastercard), and your items are being prepared for Royal Mail shipment.
                     </p>
                     <div className="success-actions">
                         {user ? (
@@ -237,17 +352,49 @@ const Checkout = () => {
     }
 
     return (
-        <div className="checkout-page container">
+        <div className="checkout-page container page-entrance">
             <div className="checkout-grid">
                 {/* Left Column: Form */}
-                <form className="checkout-form" onSubmit={handleCheckoutSubmit}>
+                <div className="checkout-form">
                     <h2>Checkout</h2>
 
                     {errorMsg && <div className="checkout-error">{errorMsg}</div>}
 
                     {/* Contact Info */}
                     <div className="form-section">
-                        <h3>1. Contact Information</h3>
+                        <div className="checkout-section-header-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+                            <h3 style={{ margin: 0 }}>1. Contact Information</h3>
+                            {!user && (
+                                <Link to="/login" style={{ fontSize: '0.85rem', color: '#856404', textDecoration: 'underline', fontWeight: 600 }}>
+                                    Already have an account? Sign In
+                                </Link>
+                            )}
+                        </div>
+
+                        {!user && (
+                            <div className="checkout-tip-banner" style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.8rem',
+                                backgroundColor: '#e8f4fd',
+                                border: '1px solid #b8daff',
+                                borderRadius: '4px',
+                                padding: '0.8rem 1.2rem',
+                                marginBottom: '1.5rem',
+                                color: '#004085',
+                                fontSize: '0.85rem',
+                                fontWeight: 500
+                            }}>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ color: '#004085', flexShrink: 0 }}>
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                </svg>
+                                <span>
+                                    <strong>Quick Tip:</strong> Log in to your account <Link to="/login" style={{ textDecoration: 'underline', fontWeight: 600, color: 'inherit' }}>here</Link> to track your order status in real-time.
+                                </span>
+                            </div>
+                        )}
                         <div className="form-group">
                             <label>Full Name</label>
                             <input 
@@ -256,6 +403,7 @@ const Checkout = () => {
                                 value={formData.customerName} 
                                 onChange={handleInputChange} 
                                 required 
+                                disabled={!!clientSecret}
                                 placeholder="Jane Doe"
                             />
                         </div>
@@ -267,6 +415,7 @@ const Checkout = () => {
                                 value={formData.customerEmail} 
                                 onChange={handleInputChange} 
                                 required 
+                                disabled={!!clientSecret}
                                 placeholder="jane@example.com"
                             />
                         </div>
@@ -283,6 +432,7 @@ const Checkout = () => {
                                 value={formData.address} 
                                 onChange={handleInputChange} 
                                 required 
+                                disabled={!!clientSecret}
                                 placeholder="123 Luxury Ave, Apt 4"
                             />
                         </div>
@@ -295,6 +445,7 @@ const Checkout = () => {
                                     value={formData.city} 
                                     onChange={handleInputChange} 
                                     required 
+                                    disabled={!!clientSecret}
                                     placeholder="London"
                                 />
                             </div>
@@ -306,6 +457,7 @@ const Checkout = () => {
                                     value={formData.postalCode} 
                                     onChange={handleInputChange} 
                                     required 
+                                    disabled={!!clientSecret}
                                     placeholder="SW1A 1AA"
                                 />
                             </div>
@@ -318,15 +470,18 @@ const Checkout = () => {
                                 value={formData.country} 
                                 onChange={handleCountryChange}
                                 onFocus={() => {
-                                    setSuggestions(COUNTRIES);
-                                    setShowSuggestions(true);
+                                    if (!clientSecret) {
+                                        setSuggestions(COUNTRIES);
+                                        setShowSuggestions(true);
+                                    }
                                 }}
                                 onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
                                 required
+                                disabled={!!clientSecret}
                                 placeholder="e.g. United Kingdom, United States, Germany, Sri Lanka"
                                 autoComplete="off"
                             />
-                            {showSuggestions && suggestions.length > 0 && (
+                            {showSuggestions && suggestions.length > 0 && !clientSecret && (
                                 <ul className="country-suggestions-list">
                                     {suggestions.map((c, i) => (
                                         <li 
@@ -356,7 +511,8 @@ const Checkout = () => {
                                                 type="radio" 
                                                 name="shippingMethod" 
                                                 checked={isSelected}
-                                                onChange={() => setSelectedMethod(method)} 
+                                                disabled={!!clientSecret}
+                                                onChange={() => handleShippingMethodChange(method)} 
                                             />
                                             <div className="shipping-method-info">
                                                 <span className="shipping-method-name">{method.name}</span>
@@ -375,77 +531,49 @@ const Checkout = () => {
                         )}
                     </div>
 
-                    {/* Payment Info */}
-                    <div className="form-section">
-                        <div className="payment-header">
-                            <h3>4. Secure Card Payment</h3>
-                            <div className="card-icons">
-                                <span>VISA</span>
-                                <span>MC</span>
-                                <span>AMEX</span>
-                            </div>
-                        </div>
-                        <div className="card-form">
-                            <div className="form-group">
-                                <label>Card Number</label>
-                                <input 
-                                    type="text" 
-                                    name="cardNumber" 
-                                    value={formData.cardNumber} 
-                                    onChange={handleInputChange} 
-                                    required 
-                                    placeholder="•••• •••• •••• ••••"
-                                    maxLength="19"
-                                />
-                            </div>
-                            <div className="form-row">
-                                <div className="form-group col-6">
-                                    <label>Expiry Date</label>
-                                    <input 
-                                        type="text" 
-                                        name="cardExpiry" 
-                                        value={formData.cardExpiry} 
-                                        onChange={handleInputChange} 
-                                        required 
-                                        placeholder="MM / YY"
-                                        maxLength="7"
-                                    />
-                                </div>
-                                <div className="form-group col-6">
-                                    <label>CVC / CVV</label>
-                                    <input 
-                                        type="password" 
-                                        name="cardCvc" 
-                                        value={formData.cardCvc} 
-                                        onChange={handleInputChange} 
-                                        required 
-                                        placeholder="•••"
-                                        maxLength="4"
-                                    />
+                    {/* Stripe Secure Payment Section */}
+                    {clientSecret ? (
+                        <Elements stripe={stripePromise} options={{ clientSecret }}>
+                            <StripeCheckoutForm 
+                                formData={formData}
+                                cartItems={cartItems}
+                                clearCart={clearCart}
+                                total={total}
+                                selectedCurrency={selectedCurrency}
+                                shippingCostConverted={shippingCostConverted}
+                                selectedMethod={selectedMethod}
+                                setSuccessOrder={setSuccessOrder}
+                                setErrorMsg={setErrorMsg}
+                            />
+                        </Elements>
+                    ) : (
+                        <div className="form-section">
+                            <div className="payment-header">
+                                <h3>4. Secure Card Payment</h3>
+                                <div className="card-icons">
+                                    <span>VISA</span>
+                                    <span>MC</span>
+                                    <span>AMEX</span>
                                 </div>
                             </div>
-                            <div className="form-group">
-                                <label>Cardholder Name</label>
-                                <input 
-                                    type="text" 
-                                    name="cardName" 
-                                    value={formData.cardName} 
-                                    onChange={handleInputChange} 
-                                    required 
-                                    placeholder="JANE DOE"
-                                />
-                            </div>
+                            <p style={{ color: '#666666', fontSize: '0.9rem', marginBottom: '1.8rem', lineHeight: '1.5' }}>
+                                Secure payments are powered by Stripe. Please review your contact information, shipping address, and delivery choice, then click below to secure your transaction session.
+                            </p>
+                            <button 
+                                type="button" 
+                                onClick={handleProceedToPayment} 
+                                className="complete-order-btn" 
+                                disabled={processing}
+                            >
+                                {processing ? (
+                                    <span className="spinner-text">Initializing Stripe Session...</span>
+                                ) : (
+                                    `Proceed to Secure Payment`
+                                )}
+                            </button>
                         </div>
-                    </div>
-
-                    <button type="submit" className="complete-order-btn" disabled={processing}>
-                        {processing ? (
-                            <span className="spinner-text">Processing Payment...</span>
-                        ) : (
-                            `Pay ${selectedCurrency === 'LKR' ? 'Rs ' : selectedCurrency + ' '}${total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} ${selectedCurrency}`
-                        )}
-                    </button>
-                </form>
+                    )}
+                </div>
 
                 {/* Right Column: Order Summary */}
                 <div className="checkout-summary">

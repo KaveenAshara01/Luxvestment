@@ -102,3 +102,8 @@ export const fetchMyOrdersApi = async () => {
     const response = await axios.get(`${ORDERS_URL}/myorders`, { headers: getAuthHeader() });
     return response.data;
 };
+
+export const createPaymentIntentApi = async (paymentData) => {
+    const response = await axios.post('/api/payments/create-payment-intent', paymentData, { headers: getAuthHeader() });
+    return response.data;
+};

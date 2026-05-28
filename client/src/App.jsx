@@ -24,6 +24,7 @@ import { AuthProvider } from './context/AuthContext';
 import { CurrencyProvider } from './context/CurrencyContext';
 import { CartProvider } from './context/CartContext';
 import CartDrawer from './components/CartDrawer';
+import ScrollToTop from './components/ScrollToTop';
 import './App.css';
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
       <CurrencyProvider>
         <CartProvider>
           <Router>
+            <ScrollToTop />
             <AnalyticsTracker />
             <div className="App">
               <Header />

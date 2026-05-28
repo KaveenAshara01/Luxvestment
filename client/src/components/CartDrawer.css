@@ -238,3 +238,29 @@
     from { transform: translateX(100%); }
     to { transform: translateX(0); }
 }
+
+.cart-login-reminder {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    background-color: #fff9e6;
+    border: 1px solid #ffeeba;
+    border-radius: 4px;
+    padding: 0.8rem 1rem;
+    margin-bottom: 1.5rem;
+    color: #856404;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.cart-login-reminder:hover {
+    background-color: #fff3cd;
+    border-color: #ffe8a1;
+}
+
+.cart-login-reminder svg {
+    flex-shrink: 0;
+    color: #856404;
+}

@@ -26,7 +26,7 @@ const Shop = () => {
     const categories = ['All', ...new Set(Array.isArray(products) ? products.map(p => p.collectionId?.name).filter(Boolean) : [])];
 
     return (
-        <div className="shop-page container">
+        <div className="shop-page container page-entrance">
             <div className="shop-header">
                 <h1>The Archive</h1>
                 <p>Authentic, rare, and ready for a new home.</p>
